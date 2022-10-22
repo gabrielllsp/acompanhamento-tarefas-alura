@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
-import 'package:nosso_primeiro_projeto/components/tesk.dart';
+import 'package:nosso_primeiro_projeto/data/task_inherited.dart';
+import 'package:nosso_primeiro_projeto/screens/form_screen.dart';
 
 class InitialScreen extends StatefulWidget {
   const InitialScreen({Key? key}) : super(key: key);
@@ -10,8 +10,6 @@ class InitialScreen extends StatefulWidget {
 }
 
 class _InitialScreenState extends State<InitialScreen> {
-  bool opacidade = true;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,46 +17,19 @@ class _InitialScreenState extends State<InitialScreen> {
         leading: Container(),
         title: const Text('Acompanhamento de Tarefas'),
       ),
-      body: AnimatedOpacity(
-        duration: const Duration(microseconds: 800),
-        opacity: opacidade ? 1 : 0,
-        child: ListView(
-          children: const [
-            Task(
-                'Aprender Flutter',
-                'assets/images/dash.png',
-                3),
-            Task(
-                'Andar de Bicicleta',
-                'assets/images/bicicleta.jpeg',
-                2),
-            Task(
-                'Ler',
-                'assets/images/biblia.jpg',
-                5),
-            Task(
-                'Jogar',
-                'assets/images/xadrez.jpg',
-                2),
-            Task(
-                'Caminhada',
-                'assets/images/caminhada.jpeg',
-                3),
-            Task(
-                'Esporte',
-                'assets/images/sport.png',
-                3),
-            SizedBox(height: 80,)
-          ],
-        ),
+      body: ListView(
+        padding: const EdgeInsets.only(top: 8,bottom: 50),
+        children: TaskInherited.of(context).taskList,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-            opacidade = !opacidade;
-          });
+          Navigator.push(
+              context, MaterialPageRoute(builder: (contextNew) => FormScreen(taskContext: context,)));
         },
-        child: const Icon(Icons.remove_red_eye, color: Colors.white,),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }
