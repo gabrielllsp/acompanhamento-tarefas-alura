@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nosso_primeiro_projeto/data/task_dao.dart';
 
 import 'difficulty.dart';
 
@@ -99,6 +100,42 @@ class _TaskState extends State<Task> {
                       height: 52,
                       width: 52,
                       child: ElevatedButton(
+                          //onLongPress para deletar uma tarefa!
+                          onLongPress: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    //novo Widget para confirmar se iremos deletar de fato
+                                    title: Row(
+                                      children: const [
+                                        Text('Deletar'),
+                                        Icon(Icons.delete_forever),
+                                      ],
+                                    ),
+                                    content: const Text(
+                                        'Tem certeza de que deseja deletar essa Tarefa?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('Não'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () async {
+                                          await TaskDao().delete(widget.nome);
+                                          // print('Tarefa ${widget.nome} deletada');
+                                          // ignore: use_build_context_synchronously
+                                          Navigator.pop(
+                                              context); // aqui não conseguimos forçar um setState a acontecer lá na tela inicial. Para resolver isso precisamos de um bom gerenciamento de estado.
+                                        },
+                                        child: const Text('Sim'),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
                           onPressed: () {
                             setState(() {
                               widget.nivel++;
